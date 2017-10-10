@@ -45,7 +45,7 @@ export class DateControlComponent
             this.onTouched();
             return;
         }
-
+        
         var date = new Date(this.year, this.month-1, this.day, this.hour, this.minute, 0, 0);
 
         this.onChange(date.toISOString());

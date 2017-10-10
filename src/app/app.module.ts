@@ -1,6 +1,7 @@
+import { FlightEventService } from './flight.event.service';
 import { NavbarComponent } from './navbar/navbar.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
-import { RouterModule } from '@angular/router';
+import { PreloadAllModules, RouterModule } from '@angular/router';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { SharedModule } from './shared/shared.module';
 import { BasketComponent } from './basket/basket.component';
@@ -24,11 +25,14 @@ import { FlightBookingComponent } from './flight-booking/flight-booking.componen
     FormsModule,
     HttpModule,
     HttpClientModule,
-    FlightBookingModule,  // Würde Lazy Loading verhindern!!
+    // FlightBookingModule,  // Würde Lazy Loading verhindern!!
     
-    RouterModule.forRoot(APP_ROUTES),
+    RouterModule.forRoot(APP_ROUTES, {
+      preloadingStrategy: PreloadAllModules
+      // useHash: true
+    }),
     
-    SharedModule,
+    SharedModule.forRoot(),
     OAuthModule.forRoot()
   ],
   declarations: [
@@ -41,6 +45,7 @@ import { FlightBookingComponent } from './flight-booking/flight-booking.componen
   providers: [
     // { provide: FlightService, useClass: FlightService }
     // FlightService
+    FlightEventService,
     { provide: BASE_URL, useValue: 'http://www.angular.at/api/'}
   ],
   bootstrap: [AppComponent]

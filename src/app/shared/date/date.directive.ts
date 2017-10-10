@@ -29,6 +29,9 @@ export class DateValueAccessor implements ControlValueAccessor {
           }
   
           var normalizedValue = (value) ? value : '';
+          
+          //this._elementRef.nativeElement.value = normalizedValue;
+
           this._renderer.setElementProperty(this._elementRef.nativeElement, 'value', normalizedValue);
   
       }

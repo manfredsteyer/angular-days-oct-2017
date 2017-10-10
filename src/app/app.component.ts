@@ -1,3 +1,4 @@
+import { GuardsCheckEnd, GuardsCheckStart } from '@angular/router';
 import { JwksValidationHandler, OAuthService } from 'angular-oauth2-oidc';
 import { NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
@@ -17,7 +18,10 @@ export class AppComponent implements OnInit {
     this
       .router
       .events
-      .filter(e => e instanceof NavigationStart)
+      .filter(e => 
+        e instanceof NavigationStart 
+        || e instanceof GuardsCheckEnd
+      )
       .subscribe(_ => {
         this.showWaitInfo = true;
       });
@@ -28,10 +32,14 @@ export class AppComponent implements OnInit {
         .filter(e => 
           e instanceof NavigationEnd
           || e instanceof NavigationCancel
-          || e instanceof NavigationError )
+          || e instanceof NavigationError 
+          || e instanceof GuardsCheckStart
+        )
         .subscribe(_ => {
           this.showWaitInfo = false;
         });
+
+        this.router.events.subscribe(e => console.debug('event', e));
   
     }
 }

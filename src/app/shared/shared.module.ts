@@ -1,3 +1,4 @@
+import { AuthGuard } from '../navbar/auth.guard';
 import { FormsModule } from '@angular/forms';
 import { DateControlComponent } from './date/date-control.component';
 import { DateValueAccessor } from './date/date.directive';
@@ -17,10 +18,7 @@ import { LocationPipe } from "./pipes/location.pipe";
         DateValueAccessor,
         DateControlComponent
     ],
-    providers: [ 
-        AuthService, 
-        CustomPreloadingStrategy
-    ],
+    providers: [],
     exports: [
         LocationPipe,
         DateValueAccessor,
@@ -28,4 +26,14 @@ import { LocationPipe } from "./pipes/location.pipe";
     ]
 })
 export class SharedModule { 
+    static forRoot(): ModuleWithProviders {
+        return {
+            ngModule: SharedModule,
+            providers: [ 
+                AuthGuard,
+                AuthService, 
+                CustomPreloadingStrategy
+            ] 
+        }
+    }
 }

@@ -4,7 +4,6 @@ import { Component, OnInit } from '@angular/core';
     selector: 'flight-booking',
     templateUrl: './flight-booking.component.html'
 })
-
 export class FlightBookingComponent implements OnInit {
     constructor() { }
 

@@ -1,3 +1,4 @@
+import { FlightEventService } from '../../flight.event.service';
 import { Flight } from '../../entities/flight';
 import { Component, OnInit, EventEmitter } from '@angular/core';
 
@@ -23,11 +24,17 @@ export class FlightSearchComponent {
         "5": true
     };
 
-    constructor(private flightService: FlightService) { 
+    constructor(
+        private flightEventService: FlightEventService,
+        private flightService: FlightService) { 
     }
 
     get flights() {
         return this.flightService.flights;
+    }
+
+    get flights$() {
+        return this.flightService.flights$;
     }
 
     search(): void {
@@ -44,6 +51,7 @@ export class FlightSearchComponent {
 
     select(f: Flight): void {
         this.selectedFlight = f;
+        this.flightEventService.flightSelected.next(f);
     }
 
     delay() {

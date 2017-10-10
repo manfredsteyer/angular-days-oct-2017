@@ -1,3 +1,4 @@
+import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../shared/auth/auth.service';
 import { Component, OnInit } from '@angular/core';
 
@@ -10,6 +11,10 @@ import { Component, OnInit } from '@angular/core';
                 <h2 class="title" *ngIf="userName">Welcome, {{userName}}!</h2>
             </div>
             <div class="content">
+                <div *ngIf="needsLogin">
+                Please log in to use the restricted area of this high sophisticated app!
+                </div>
+
                 <button class="btn btn-default" (click)="login()">Login</button>
                 <button class="btn btn-default" (click)="logout()">Logout</button>
             
@@ -22,7 +27,12 @@ import { Component, OnInit } from '@angular/core';
 })
 
 export class HomeComponent implements OnInit {
-    constructor(private authService: AuthService) { }
+    constructor(
+        private route: ActivatedRoute,
+        private authService: AuthService
+    ) { }
+
+    needsLogin;
 
     get userName() {
         return this.authService.userName;
@@ -36,5 +46,10 @@ export class HomeComponent implements OnInit {
         this.authService.logout();
     }
 
-    ngOnInit() { }
+    ngOnInit() { 
+
+        this.route.params.subscribe(p => {
+            this.needsLogin = p['needsLogin'];
+        })
+    }
 }

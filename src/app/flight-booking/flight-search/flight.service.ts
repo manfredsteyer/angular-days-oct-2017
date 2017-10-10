@@ -1,3 +1,4 @@
+import { BehaviorSubject } from 'rxjs/Rx';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { Flight } from '../../entities/flight';
 import { BASE_URL } from '../../app.tokens';
@@ -8,6 +9,9 @@ import { Observable } from "rxjs";
 @Injectable()
 export class FlightService {
 
+    private flightsSubject = new BehaviorSubject<Flight[]>([]);
+    public flights$: Observable<Flight[]> = this.flightsSubject.asObservable();
+
     constructor(
         private http: HttpClient,
         private oauthService: OAuthService,
@@ -17,10 +21,14 @@ export class FlightService {
     flights: Flight[] = [];
 
     load(from: string, to: string): void {
-        this.find(from, to).subscribe(
-            flights => this.flights = flights,
+        let x = this.find(from, to).subscribe(
+            flights => { 
+                this.flights = flights;
+                this.flightsSubject.next(flights);
+            },
             err => console.error('err loading flights', err)
         );
+        
     }
 
     delay() {
@@ -30,8 +38,16 @@ export class FlightService {
         let oldFlight = oldFlights[0];
         let oldDate = new Date(oldFlight.date);
         
-        oldDate.setDate(oldDate.getDate() + 15 * ONE_MINUTE );
-        oldFlight.date = oldDate.toISOString();
+        // Mutable
+        // oldDate.setTime(oldDate.getTime() + 15 * ONE_MINUTE );
+        // oldFlight.date = oldDate.toISOString();
+
+        let newDate = new Date(oldDate.getTime() + 15 * ONE_MINUTE);
+        let newFlight: Flight = { ...oldFlight, date: newDate.toISOString() };
+        let newFlights = [ newFlight, ...oldFlights.slice(1) ]
+
+        this.flights = newFlights;
+        this.flightsSubject.next(newFlights);
 
     }
 

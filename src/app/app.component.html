@@ -6,6 +6,17 @@
       <navbar-cmp></navbar-cmp>
       <div class="content">
           <router-outlet></router-outlet>
-      </div>
+        </div>
+
   </div>
+  
 </div>
+
+<router-outlet name="aux"></router-outlet>
+
+<div class="loading-indicator" *ngIf="showWaitInfo" style="z-index:2;">
+        <div class="spinner">
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>
+        </div>
+    </div>

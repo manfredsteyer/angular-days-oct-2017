@@ -1,3 +1,4 @@
+import { FlightEventService } from '../flight.event.service';
 import { Component } from '@angular/core';
 import { Flight } from '../entities/flight';
 import { Router } from "@angular/router";
@@ -8,8 +9,13 @@ import { Router } from "@angular/router";
   styleUrls: ['./basket.component.css']
 })
 export class BasketComponent {
-
-  constructor() {}
+  flights: Flight[] = [];
+  constructor(private flightEventService: FlightEventService) {
+    
+    flightEventService.flightSelected.subscribe(f => {
+      this.flights.push(f);
+    })
+  }
 
 
 }

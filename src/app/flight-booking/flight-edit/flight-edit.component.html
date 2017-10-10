@@ -1,26 +1,49 @@
 
+
+
 <div class="card">
     <div class="header">
         <h1 class="title">Flight Edit</h1>
     </div>
     <div class="content">
 
-<!--  
-  <div style="position:relative; z-index: 100" *ngIf="warningDialog.show" class="alert alert-warning">
-      <div>
-      Daten wurden nicht gespeichert! Trotzdem Maske verlassen?
-      </div>
-      <p>&nbsp;</p>
-      <div>
-          <a href="javascript:void(0)" (click)="decide(true)" class="btn btn-danger">Yes</a>
-          <a href="javascript:void(0)" (click)="decide(false)" class="btn btn-default">No</a>
-      </div>
-  </div>
--->
+    <div *ngIf="warningDialog.show" class="alert alert-warning" >
+            <div>
+                Unsaved data. Do you really want to leave?
+            </div>
+            <p>&nbsp;</p>
+            <div>
+                <a href="javascript:void(0)" (click)="decide(true)" class="btn btn-danger">Yes</a>
+                <a href="javascript:void(0)" (click)="decide(false)" class="btn btn-default">No</a>
+            </div>
+        </div>
 
         <p>Id: {{id}}</p>
         <p>ShowDetails: {{showDetails}}</p>
+
+        <form *ngIf="flight">
+            <div class="form-group">
+                <label>Id:</label>
+                <input name="id" [(ngModel)]="flight.id" class="form-control">
+            </div>
+            <div class="form-group">
+                <label>From:</label>
+                <input name="from" [(ngModel)]="flight.from" class="form-control">
+            </div>
+            <div class="form-group">
+                <label>To:</label>
+                <input name="to" [(ngModel)]="flight.to" class="form-control">
+            </div>
+            <div class="form-group">
+                <label>Date:</label>
+                
+                <date-control required [(ngModel)]="flight.date" name="date"></date-control>
+                
+            </div>
+
+        </form>
         <pre>{{ flight | json }}</pre>
     </div>
 
 </div>
+

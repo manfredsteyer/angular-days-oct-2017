@@ -1,3 +1,5 @@
+import { FlightEditResolver } from './flight-edit/flight-edit.resolver';
+import { ExitGuard } from '../shared/exit/exit.guard';
 import { FlightEditComponent } from './flight-edit/flight-edit.component';
 import { RouterModule } from '@angular/router';
 import { FlightService } from './flight-search/flight.service';
@@ -9,6 +11,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from "@angular/common";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { SharedModule } from "../shared/shared.module";
+import { FlightCardComponent } from './flight-card/flight-card.component';
 
 @NgModule({
     imports: [
@@ -21,10 +24,12 @@ import { SharedModule } from "../shared/shared.module";
         PassengerSearchComponent,
         FlightSearchComponent,
         FlightEditComponent,
-        FlightBookingComponent
-
-    ],
+        FlightBookingComponent,
+    FlightCardComponent
+],
     providers: [
+        FlightEditResolver,
+        ExitGuard,
         FlightService
     ],
     exports: [
