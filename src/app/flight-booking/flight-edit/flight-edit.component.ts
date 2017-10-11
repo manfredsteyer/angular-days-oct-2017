@@ -1,3 +1,5 @@
+import { CityValidator } from '../../shared/validation/city-validator';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CanExitComponent } from '../../shared/exit/exit.guard';
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
@@ -17,6 +19,15 @@ export class FlightEditComponent implements OnInit, CanExitComponent {
   id: string;
   showDetails: string;
   flight: Flight;
+
+  form: FormGroup;
+
+  dynamicMetaData = [
+    { label: 'Id', name: 'id' },
+    { label: 'Date', name: 'date' },
+    { label: 'Airport of Departure', name: 'from' },
+    { label: 'Airport of Destination', name: 'to' },
+  ];
   
   date: string = new Date().toISOString();
   
@@ -27,8 +38,35 @@ export class FlightEditComponent implements OnInit, CanExitComponent {
 
   constructor(
     private route: ActivatedRoute,
-    private flightService: FlightService
-  ) { }
+    private flightService: FlightService,
+    private fb: FormBuilder
+  ) { 
+
+    this.form = this.fb.group({
+      'id': [''],
+      'from': [
+        '', 
+        [
+          Validators.required, 
+          Validators.minLength(3),
+          CityValidator.validate(['Graz', 'Hamburg', 'Berlin', 'Wien', 'Zürich', 'Kognito'])
+        ],
+        [
+          CityValidator.validateAsync(flightService)
+        ]
+      ],
+      'to': [''],
+      'date': ['']
+    });
+
+    this.form.validator = Validators.compose([CityValidator.validateRouteTrip]);
+
+
+    this.form.valueChanges.subscribe(changes => {
+      console.debug('changes', changes);
+    })
+
+  }
 
   public CanExit(): Observable<boolean> {
     
@@ -56,6 +94,11 @@ export class FlightEditComponent implements OnInit, CanExitComponent {
 
     this.route.data.subscribe(data => {
       this.flight = data['flight'];
+      this.form.patchValue(this.flight);
+
+
+      // this.form.controls['from'].patchValue(this.flight.from);
+
     });
   }
 
@@ -69,5 +112,9 @@ export class FlightEditComponent implements OnInit, CanExitComponent {
   */
 
 
+  save() {
+    let changedFlight: Flight = this.form.value;
+    console.debug('changedFlight', changedFlight);
+  }
 
 }

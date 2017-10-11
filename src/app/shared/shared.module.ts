@@ -1,3 +1,5 @@
+import { AsyncCityValidatorDirective } from './validation/async-city-validator.directive';
+import { RoundTripValidatorDirective } from './validation/roundtrip-validation.directive';
 import { AuthGuard } from '../navbar/auth.guard';
 import { FormsModule } from '@angular/forms';
 import { DateControlComponent } from './date/date-control.component';
@@ -7,6 +9,7 @@ import { AuthService } from './auth/auth.service';
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { CommonModule } from "@angular/common";
 import { LocationPipe } from "./pipes/location.pipe";
+import { CityValidatorDirective } from "./validation/city-validator.directive";
 
 @NgModule({
     imports: [
@@ -16,13 +19,19 @@ import { LocationPipe } from "./pipes/location.pipe";
     declarations: [
         LocationPipe,
         DateValueAccessor,
-        DateControlComponent
+        DateControlComponent,
+        CityValidatorDirective,
+        RoundTripValidatorDirective,
+        AsyncCityValidatorDirective
     ],
     providers: [],
     exports: [
         LocationPipe,
         DateValueAccessor,
-        DateControlComponent
+        CityValidatorDirective,
+        DateControlComponent,
+        RoundTripValidatorDirective,
+        AsyncCityValidatorDirective
     ]
 })
 export class SharedModule { 

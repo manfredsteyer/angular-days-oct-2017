@@ -18,13 +18,15 @@ import { FlightCardComponent } from './flight-card/flight-card.component';
         CommonModule,
         FormsModule,
         RouterModule.forChild(FLIGHT_SEARCH_ROUTES),
-        SharedModule
+        SharedModule,
+        ReactiveFormsModule
     ],
     declarations: [
         PassengerSearchComponent,
         FlightSearchComponent,
         FlightEditComponent,
-        FlightBookingComponent,
+        FlightBookingComponent
+,
     FlightCardComponent
 ],
     providers: [

@@ -21,24 +21,41 @@
         <p>Id: {{id}}</p>
         <p>ShowDetails: {{showDetails}}</p>
 
-        <form *ngIf="flight">
+        <form [formGroup]="form">
+
+
+            <h2>Dynamic Form</h2>
+
+            <div class="form-group" *ngFor="let entry of dynamicMetaData">
+                    <label>{{entry.label}}</label>
+                    <input [formControlName]="entry.name" name="id" class="form-control">
+            </div>
+    
+
+
+            <h2>Static Form</h2>
+
+            <div *ngIf="!form.valid"><pre>{{form.errors | json}}</pre></div>
+
             <div class="form-group">
                 <label>Id:</label>
-                <input name="id" [(ngModel)]="flight.id" class="form-control">
+                <input formControlName="id" name="id" class="form-control">
             </div>
             <div class="form-group">
                 <label>From:</label>
-                <input name="from" [(ngModel)]="flight.from" class="form-control">
+                <input formControlName="from" class="form-control">
+
+                <div *ngIf="!form.controls['from'].valid">... Fehler ... </div>
+                <div *ngIf="!form.controls['from'].valid"><pre>{{ form.controls['from'].errors | json }}</pre> </div>
+
             </div>
             <div class="form-group">
                 <label>To:</label>
-                <input name="to" [(ngModel)]="flight.to" class="form-control">
+                <input formControlName="to" name="to" class="form-control">
             </div>
             <div class="form-group">
                 <label>Date:</label>
-                
-                <date-control required [(ngModel)]="flight.date" name="date"></date-control>
-                
+                <date-control formControlName="date" name="date"></date-control>
             </div>
 
         </form>

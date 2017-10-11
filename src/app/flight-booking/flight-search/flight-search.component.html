@@ -8,11 +8,37 @@
 </div>
 <div class="content">
 
-<form>
+<form #f="ngForm" roundTrip>
 
     <div class="form-group">
         <label>From:</label>
-        <input name="from" [(ngModel)]="from" class="form-control">
+        <input 
+            name="from" 
+            [(ngModel)]="from" 
+            class="form-control"
+            required
+            minlength="3"
+            maxlength="30"
+            asyncCity
+            city="Graz,Hamburg,Berlin,Zürich,Frankfurt,Wien,Flagranti"
+            pattern="[\wöäüßÖÄÜ]*">
+
+
+        <div *ngIf="f?.hasError('roundTrip')">... RoundTrip ...</div>
+
+        <div *ngIf="!f?.controls['from']?.valid">... Error ...</div>
+        <div *ngIf="f?.controls['from']?.hasError('required')">... Required ...</div>
+        <div *ngIf="f?.controls['from']?.hasError('minlength')">... MinLength ...</div>
+        <div *ngIf="f?.controls['from']?.hasError('maxlength')">... MaxLenth ...</div>
+        <div *ngIf="f?.controls['from']?.hasError('pattern')">... Pattern ...</div>
+        <div *ngIf="f?.controls['from']?.hasError('city')">... City ...</div>
+        <div *ngIf="f?.controls['from']?.hasError('asyncCity')">... asyncCity ...</div>
+        <div *ngIf="!f?.controls['from']?.valid"><pre>{{ f?.controls['from']?.errors.city.reason | json }}</pre></div>
+        <div *ngIf="f?.controls['from']?.pending">
+            <marquee>Validiere ...</marquee>
+        </div>
+        
+        <!-- email, requiresTrue, min, max -->
     </div>
     <div class="form-group">
         <label>To:</label>
@@ -23,7 +49,7 @@
         <button 
             class="btn btn-default"
             (click)="search()" 
-            [disabled]="!from || !to">Search</button>
+            [disabled]="!f?.valid">Search</button>
 
         <button 
             class="btn btn-default"
